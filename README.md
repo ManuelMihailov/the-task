@@ -2,7 +2,7 @@
 completed technical challenge
 
 
-#Customer Reply:
+# Customer Reply:
 
 Dear Richard,
 
