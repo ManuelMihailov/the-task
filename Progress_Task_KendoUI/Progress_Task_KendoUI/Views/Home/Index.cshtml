@@ -1,0 +1,69 @@
+﻿<div class="placeholders mb-2">
+    <div class="row d-flex justify-content-start">
+        <h1>Example Project for Telerik Grid UI</h1>
+        <br /><br /><br />
+        <h2>&nbsp;</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        @* In the <kendo-database> tag you can specify the the amount of elements per page with the |page-size="n"| attribute 
+           and in the <kendo-grid> element you can add the tag <pageable> with the attribute |enabled = "true"| for pagination *@
+        <kendo-datasource type="DataSourceTagHelperType.Ajax" name="dataSource1" page-size="20">
+            <transport>
+                <read url="@Url.Action("Orders_Read", "Grid")" />
+            </transport>
+        </kendo-datasource>
+
+        <h5>Filter</h5>
+        
+        @* With <kendo-filter> you can create filters which you can apply to the data requests from the datasource.
+            You just need to specify which datasource to connect it to by typing the name you gave to the datasource as the
+            value of the |datasource-id = "n"| attribute.*@
+        <kendo-filter name="filter" apply-button="true" expression-preview="true" datasource-id="dataSource1">
+            <fields>
+                <filter-field name="Freight" type="number" label="Freight"></filter-field>
+                <filter-field name="OrderDate" type="date" label="Order Date"></filter-field>
+                <filter-field name="ShipCity" type="string" label="Ship City"></filter-field>
+                @* You can create additional filter options by adding a <filter-field> tag. The criterias (less than / equal / older / etc.)
+                    you can filter by are automatically selected once you assign the data type with the |type = "n"| attribute.
+                    To choose which element to apply that filter to you write the name of the property from the ViewModel as the value
+                    of the |name = "n"| field*@
+            </fields>
+        </kendo-filter>
+
+
+        <br /><br /><br />
+        @* You can make rows in the grid selectable by adding the attribute |selectable = "true"|. 
+            You can access all the information from a row by using javascript to obtain the number of the selected row with this.select() and then
+            use the number of the selected row to get all the data from row using this.dataItem(Row Number).
+            At the bottom of the page there is a working javascript function which does what I explained up above and then logs the OrderID in the console.*@
+        <kendo-grid name="grid" height="550" on-change="logSelection" selectable="true" datasource-id="dataSource1">
+            <columns>
+                <column field="OrderID" title="Order ID"/>
+                <column field="Freight" title="Freight" />
+                <column field="OrderDate" title="Order Date" format="{0:MM/dd/yyyy}" />
+                <column field="ShipName" title="Ship Name" />
+                <column field="ShipCity" title="Ship City" />
+            </columns>
+            <scrollable enabled="true" />
+            <pageable enabled="true" />
+            @* By enabling the column menu with <column-menu enabled = "true" /> you can activate a dropdown menu which allows you
+                to hide and show collumns by toggling a checkbox.*@
+            <column-menu enabled="true" />
+                
+                @*An alternative to hiding and showing collumns is using javascript to set a <column> tag's
+                   |hidden = "bool"| attribute to true or false.*@
+        </kendo-grid>
+    </div>
+</div>
+
+
+<script>
+    function logSelection() {
+        var selectedRow = this.select();
+        var data = this.dataItem(selectedRow);
+        console.log(data.OrderID);
+    }
+</script>
